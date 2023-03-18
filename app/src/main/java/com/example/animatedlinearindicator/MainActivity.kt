@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
@@ -53,7 +55,9 @@ fun AnimatedLinearIndicator() {
     val width = 100.dp
     val height = 400.dp
     val radius = 50.dp
-    val pxValue = with(LocalDensity.current) { radius.toPx() }
+    val pxRadiusValue = with(LocalDensity.current) { radius.toPx() }
+    val pxHeightValue = with(LocalDensity.current) { height.toPx() }
+    val pxWidthValue = with(LocalDensity.current) { width.toPx() }
 
 
     Canvas(
@@ -64,8 +68,19 @@ fun AnimatedLinearIndicator() {
     ) {
         drawCircle(
             color = Color.Cyan,
-            radius = pxValue,
-
+            radius = pxRadiusValue,
+            center = Offset(pxWidthValue/2, pxRadiusValue)
+        )
+        drawLine(
+            color = Color.Cyan,
+            start = Offset(pxWidthValue/2,pxRadiusValue*2),
+            end = Offset(pxWidthValue/2,pxRadiusValue*6),
+            strokeWidth = 20f
+        )
+        drawCircle(
+            color = Color.Cyan,
+            radius = pxRadiusValue,
+            center = Offset(pxWidthValue/2, pxRadiusValue*7)
         )
     }
 }
