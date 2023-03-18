@@ -19,7 +19,8 @@ fun CustomLinearProgressIndicator(
     start:  Float,
     end :Float,
     color: Color = Color.Gray,
-    trackColor: Color = Color.White,
+    trackColor: Color = Color.Black,
+    yOffset:Float
 ) {
 
     Canvas(
@@ -35,7 +36,7 @@ fun CustomLinearProgressIndicator(
             endFraction = end,
             color = color,
             strokeWidth =  strokeWidth,
-            yOffset = strokeWidth/2
+            yOffset = yOffset
         )
 
     }
@@ -80,8 +81,8 @@ private fun DrawScope.drawLinearIndicator(
     // Progress line
     drawLine(
         color,
-        Offset(barStart, yOffset),
-        Offset(barEnd, yOffset),
+        Offset( yOffset,barStart),
+        Offset( yOffset,barEnd),
         strokeWidth,
         cap = StrokeCap.Round,
 
