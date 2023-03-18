@@ -3,7 +3,6 @@ package com.example.animatedlinearindicator
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.progressSemantics
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -16,27 +15,31 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun CustomLinearProgressIndicator(
-    start:  Float,
-    end :Float,
+    start:  Offset,
+    end :Offset,
+    progress: Float,
     color: Color = Color.Gray,
     trackColor: Color = Color.Black,
-    yOffset:Float
 ) {
 
     Canvas(
         Modifier
-            .progressSemantics(end)
+            .progressSemantics(progress)
             .size(LinearIndicatorWidth, LinearIndicatorHeight)
     ) {
 
         val strokeWidth = size.height
-        drawLinearIndicatorTrack(trackColor, strokeWidth)
-        drawLinearIndicator(
-            startFraction = start,
-            endFraction = end,
+        drawLinearIndicatorTrack(
+            start = start,
+            end = end,
             color = color,
             strokeWidth =  strokeWidth,
-            yOffset = yOffset
+        )
+        drawLinearIndicator(
+            start = start,
+            end = Offset(progress,end.y),
+            color = color,
+            strokeWidth =  strokeWidth,
         )
 
     }
@@ -53,39 +56,41 @@ internal object LinearProgressIndicatorTokens {
 }
 
 private fun DrawScope.drawLinearIndicatorTrack(
+    start: Offset,
+    end: Offset,
     color: Color,
     strokeWidth: Float
 ) {
-    val height = size.height
-    drawLinearIndicator(0f, 1f, color, strokeWidth,height / 2)
+    drawLinearIndicator(
+        start = start,
+        end = end,
+        color,
+        strokeWidth,
+    )
 }
 
 
 
 private fun DrawScope.drawLinearIndicator(
-    startFraction: Float,
-    endFraction: Float,
+    start: Offset,
+    end: Offset,
     color: Color,
     strokeWidth: Float,
-    yOffset : Float
 ) {
     val width = size.width
     val height = size.height
     // Start drawing from the vertical center of the stroke
-    val yOffset = yOffset
 
     val isLtr = layoutDirection == LayoutDirection.Ltr
-    val barStart = (if (isLtr) startFraction else 1f - endFraction) * width
-    val barEnd = (if (isLtr) endFraction else 1f - startFraction) * width
+    val barStart = (if (isLtr) start.x else 1f - end.x) * width
+    val barEnd = (if (isLtr) end.x else 1f - start.x) * width
 
     // Progress line
     drawLine(
-        color,
-        Offset( yOffset,barStart),
-        Offset( yOffset,barEnd),
-        strokeWidth,
+        color = color,
+        start = start,
+        end = end,
+        strokeWidth = strokeWidth,
         cap = StrokeCap.Round,
-
         )
-
 }

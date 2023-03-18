@@ -80,9 +80,9 @@ fun AnimatedLinearIndicator() {
         )
     }
     CustomLinearProgressIndicator(
-        start = pxRadiusValue*2,
-        end = pxRadiusValue*6,
-        yOffset = pxWidthValue/2,
+        start = Offset(pxWidthValue/2,pxRadiusValue*2),
+        end = Offset(pxWidthValue/2,pxRadiusValue*6),
+        progress = 0.2f,
         color = Color.Black
     )
 }
